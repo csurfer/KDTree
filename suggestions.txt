@@ -1,0 +1,9 @@
+> 1) Does the project need to involve more generalizations than mentioned ?
+
+You mentioned higher dimensions (kd-trees) as a possible generalization. That would make sense. But you could also stay completely in 2D, if you do a thorough investigation there:  e.g., try
+(a) different choices of queries:  REPORT queries with a box (axis-aligned rectangle), a circle, a triangle, etc;  COUNTING queries (just report the number of points in the query region) for various shapes, EMPTINESS queries (just report if the query region has ANY point in it or not), RIGHTMOST-POINT queries, etc.
+(b) different choices of randomly distributed input data:  uniform over a square, uniform points within a disk, uniform within a triangle, nonuniform distributions (e.g., bivariate normal),etc.
+
+> 2) As I am implementing it in C++ what can I do for the visualization part of it ?
+
+Visualization is nice for seeing the code in action and for debugging -- you could try to learn/use OpenGL but even if you are unable to do that, since you can check correctness of the code using the brute-force method (to know the kd-tree is giving the correct answers), that should be fine and, of course, for TESTING and comparison of timing purposes, you will want to run the code without visualization.
