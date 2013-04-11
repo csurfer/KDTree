@@ -3,21 +3,8 @@
  * File   : kdtree.cpp
  */
 #include<vector>
-#include<stack>
-#include<set>
-#include<list>
-#include<map>
-#include<queue>
-#include<deque>
-#include<string>
 #include<iostream>
 #include<algorithm>
-#include<cstring>
-#include<cassert>
-#include<cstdlib>
-#include<cstdio>
-#include<cmath>
-#include<iomanip>
 
 using namespace std;
 
@@ -30,8 +17,68 @@ using namespace std;
 #define REP(i,n) FOR(i,0,n)
 #define foreach(v,c) for( typeof((c).begin()) v = (c).begin();  v != (c).end(); ++v)
 
+class DataPoint{
+public:
+	//Which dimentional point does this object represent?
+	int dim;
+	//The points are stored in the following vector.
+	vector<double> co_ord;
+};
+
+class Node{
+public:
+	//Dimention in which it divides the available data points
+	int dimention;
+	//Available DaraPoints at this node
+	vector<DataPoint> data;
+	//Median of split
+	DataPoint median;
+	//The pointers which lead to trees which hold less than or = median and greater
+	//than median data points
+	struct Node *less, *more;
+};
+
+class KDTree{
+private:
+	int dimLim;
+	Node *root;
+	int curDim;
+
+public:
+	KDTree(int d, vector<DataPoint> arr)
+	{
+		dimLim = d;
+		root = NULL;
+		curDim = 0;
+
+		if(buildTree(root, arr))
+			cout<<"Tree successfully built."<<endl;
+		else
+			cout<<"Flawed data."<<endl;
+	}
+
+	bool compare(DataPoint a, DataPoint b)
+	{
+		if(a[curDim]<=b[curDim])
+			return true;
+		else
+			return false;
+	}
+
+	bool buildTree(Node *root, vector<DataPoint> arr)
+	{
+		root = new Node();
+		root->dimention = curDim;
+		sort(arr.begin(), arr.end(), compare);
+		root->data(arr.begin(), arr.end());
+		int splitInd = arr.size()/2;
+		root->median = arr[splitInd];
+		if(buildTree() && buildTree())
+	}
+};
+
 int main()
 {
-  return 0;
+	return 0;
 }
 
