@@ -22,16 +22,16 @@ public:
 	//Which dimentional point does this object represent?
 	int dim;
 	//The points are stored in the following vector.
-	vector<double> co_ord;
-
+	double x,y,z;
+	//A display function to show the co-ordinate values.
 	void show()
 	{
-		cout<<"(";
-		REP(i,co_ord.size())
-		{
-			cout<<co_ord[i]<<",";
-		}
-		cout<<")";
+		if(dim == 1)
+			cout<<"x : "<<x<<endl;
+		else if(dim == 2)
+			cout<<"x : "<<x<<" y : "<<y<<endl;
+		else
+			cout<<"x : "<<x<<" y : "<<y<<" z : "<<z<<endl;
 	}
 };
 
@@ -39,7 +39,7 @@ class Node{
 public:
 	//Dimention in which it divides the available data points
 	int dimention;
-	//Available DaraPoints at this node
+	//Available DataPoints at this node
 	vector<DataPoint> data;
 	//Median of split
 	DataPoint median;
@@ -48,10 +48,34 @@ public:
 	struct Node *less, *more;
 };
 
-/*class KDTree{
+bool comp1(DataPoint a, DataPoint b)
+{
+	if(a.x <= b.x)
+		return true;
+	else
+		return false;
+}
+
+bool comp2(DataPoint a, DataPoint b)
+{
+	if(a.y <= b.y)
+		return true;
+	else
+		return false;
+}
+
+bool comp3(DataPoint a, DataPoint b)
+{
+	if(a.z<=b.z)
+		return true;
+	else
+		return false;
+}
+
+class KDTree{
 public:
 	int dimLim;
-	Node *root;
+	Node* root;
 	int curDim;
 
 	KDTree(int d, vector<DataPoint> arr)
@@ -60,13 +84,7 @@ public:
 		root = NULL;
 		curDim = 0;
 
-		if(buildTree(root, arr))
-			cout<<"Tree successfully built."<<endl;
-		else
-		{
-			cout<<"Flawed data."<<endl;
-			destroyTree(root);
-		}
+		root = buildTree(arr);
 	}
 
 	~KDTree()
@@ -74,43 +92,37 @@ public:
 		destroyTree(root);
 	}
 
-	bool comp(DataPoint a, DataPoint b)
+	Node* buildTree(vector<DataPoint> arr)
 	{
-		if(a.co_ord[curDim]<=b.co_ord[curDim])
-			return true;
+		if(curDim == 0)
+			sort(arr.begin(), arr.end(), comp1);
+		else if(curDim == 1)
+			sort(arr.begin(), arr.end(), comp2);
 		else
-			return false;
-	}
-
-	bool buildTree(Node *root, vector<DataPoint> arr)
-	{
-		sort(arr.begin(), arr.end(), comp);
-		root = new Node();
+			sort(arr.begin(), arr.end(), comp3);
+		Node *root = new Node();
 		root->dimention = curDim;
-		root->data(arr.begin(),arr.end());
+		root->data = arr;
 		root->less = root->more = NULL;
 		if(arr.size() == 1)
 		{
 			root->median = arr[0];
-			return true;
 		}
 		else if(arr.size() == 2)
 		{
 			root->median = arr[1];
-			return true;
 		}
 		else
 		{
 			int splitAt = arr.size()/2;
 			root->median = arr[splitAt];
 			curDim = (curDim + 1) % dimLim;
-			bool buildLess = buildTree(root->less, new vector<DataPoint>(arr.begin(), arr.begin()+splitAt+1));
-			bool buildMore = buildTree(root->more, new vector<DataPoint>(arr.begin()+splitAt+1,arr.end()));
-			if(buildLess && buildMore)
-				return true;
-			else
-				return false;
+			vector<DataPoint> lesserSubset(arr.begin(), arr.begin()+splitAt+1);
+			root->less = buildTree(lesserSubset);
+			vector<DataPoint> higherSubset(arr.begin()+splitAt+1,arr.end());
+			root->more = buildTree(higherSubset);
 		}
+		return root;
 	}
 
 	void destroyTree(Node *root)
@@ -121,25 +133,27 @@ public:
 			destroyTree(root->more);
 		free(root);
 	}
+};
 
-	void display(Node* root)
+void display(Node* root)
+{
+	if(root != NULL)
 	{
-		if(root != NULL)
+		cout<<endl<<"Current Array"<<endl;
+		REP(i, root->data.size())
 		{
-			cout<<endl<<"Current Array"<<endl;
-			foreach(it, root->data)
-			{
-				(*it).show();
-			}
-			cout<<endl<<"Current Median : "<<root->median.show()<<endl;
-
-			cout<<endl<<"Less Children"<<endl;
-			display(root->less);
-			cout<<endl<<"More Children"<<endl;
-			display(root->more);
+			root->data[i].show();
 		}
+
+		cout<<endl<<"Current Median : "<<endl;
+		root->median.show();
+
+		cout<<endl<<"Less Children"<<endl;
+		display(root->less);
+		cout<<endl<<"More Children"<<endl;
+		display(root->more);
 	}
-};*/
+}
 
 int main()
 {
@@ -154,17 +168,16 @@ int main()
 	{
 		DataPoint d;
 		d.dim = dim;
-		REP(j, dim)
-		{
-			double coord;
-			cin>>coord;
-			d.co_ord.push_back(coord);
-		}
+		if(dim == 1)
+			cin>>d.x;
+		else if(dim == 2)
+			cin>>d.x>>d.y;
+		else
+			cin>>d.x>>d.y>>d.z;
 		arr.push_back(d);
 	}
 	
-	//KDTree k(dim, arr);
-	//k.display(k.root);
+	KDTree k(dim, arr);
+	display(k.root);
 	return 0;
 }
-
