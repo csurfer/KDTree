@@ -149,7 +149,7 @@ private:
 			return false;
 	}
 
-  /*void split(Node *root, DataPoint d1, DataPoint d2)
+  void split(Node *root, DataPoint d1, DataPoint d2)
   {
     foreach(v, root->data)
     {
@@ -158,15 +158,11 @@ private:
       {
         switch(i)
         {
-          case 1:if(!((*v).x>=d1.x && (*v).x<=d2.x)) flag = false;break;
-          case 2:if(!((*v).y>=d1.y && (*v).y<=d2.y)) flag = false;break;
-          case 3:if(!((*v).x>=d1.z && (*v).z<=d2.z)) flag = false;break; 
+          case 1:if(!((*v).compare(d1,1)>=0 && (*v).compare(d2,1)<=0)) flag = false;break;
+          case 2:if(!((*v).compare(d1,2)>=0 && (*v).compare(d2,2)<=0)) flag = false;break;
         }
       }
-      if(flag)
-      {
-        (*v).show();
-      }
+      if(flag) (*v).show();
     }
   }
 
@@ -190,53 +186,32 @@ private:
               case 2:if(!((*v).compare(d1,2)>=0 && (*v).compare(d2,2)<=0)) flag = false;break;
             }
           }
-          if(flag)
-          {
-            (*v).show();
-          }
+          if(flag) (*v).show();
         }
       }
       else
       {
         if(root->dimention == 1)
         {
-          if(d2.x <= root->median.x)
-            return rectangleQ(root->less, d1, d2);
-          else if(d1.x > root->median.x)
-            return rectangleQ(root->more, d1, d2);
+          if(d2.compare(root->median,1)<=0)
+            rectangleQ(root->less, d1, d2);
+          else if(d1.compare(root->median,1)>0)
+            rectangleQ(root->more, d1, d2);
           else
-          {
-            split(root->less, d1, d2);
-            split(root->more, d1, d2);
-          }
+            split(root, d1, d2);
         }
         else if(root->dimention == 2)
         {
-          if(d2.y <= root->median.y)
-            return rectangleQ(root->less, d1, d2);
-          else if(d1.y > root->median.y)
-            return rectangleQ(root->more, d1, d2);
+          if(d2.compare(root->median,2)<=0)
+            rectangleQ(root->less, d1, d2);
+          else if(d1.compare(root->median,2)>0)
+            rectangleQ(root->more, d1, d2);
           else
-          {
-            split(root->less, d1, d2);
-            split(root->more, d1, d2);
-          }
-        }
-        else if(root->dimention == 3)
-        {
-          if(d2.z <= root->median.z)
-            return rectangleQ(root->less, d1, d2);
-          else if(d1.z > root->median.z)
-            return rectangleQ(root->more, d1, d2);
-          else
-          {
-            split(root->less, d1, d2);
-            split(root->more, d1, d2);
-          }
+            split(root, d1, d2);
         }
       }
     }
-  }*/
+  }
 
 public:
   // Constructor
@@ -334,10 +309,12 @@ public:
 		return exists(root, d);
 	}
   // Public handle to rectangle query.
-  /*void reportRectangle(DataPoint d1, DataPoint d2)
+  void reportRectangle(DataPoint d1, DataPoint d2)
   {
+    cout<<"Report : "<<endl;
     rectangleQ(root, d1, d2);
-  }*/
+    cout<<"End of Report..."<<endl<<endl;
+  }
 };
 
 int main()
@@ -364,12 +341,21 @@ int main()
 	
 	KDTree k(dim, arr);
 	//Existence check
-	REP(i,3)
+	/*REP(i,3)
   {
     DataPoint chk;
     cin>>chk.dim>>chk.x>>chk.y;
     chk.show();
     cout<<k.doesExists(chk)<<endl;
+  }*/
+  //Rectangele Q
+  REP(i,3)
+  {
+    DataPoint d1, d2;
+    cin>>d1.dim>>d1.x>>d1.y>>d2.dim>>d2.x>>d2.y;
+    d1.show();
+    d2.show();
+    k.reportRectangle(d1,d2);
   }
 	return 0;
 }
