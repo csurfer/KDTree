@@ -274,7 +274,7 @@ public:
 		root->data = arr;
     root->leaf = false;
 		root->less = root->more = NULL;
-
+  
     // Handle special cases of one or two element arrays.
 		if(arr.size() == 1)
     {
@@ -290,12 +290,25 @@ public:
 		{
 			int splitAt = arr.size()/2;
 			root->median = arr[splitAt];
-			curDim = (curDim + 1) % dimLim + 1;
 
-			vector<DataPoint> lesserSubset(arr.begin(), arr.begin()+splitAt+1);
-			root->less = buildTree(lesserSubset, curDim);
-			vector<DataPoint> higherSubset(arr.begin()+splitAt+1,arr.end());
-			root->more = buildTree(higherSubset, curDim);
+			vector<DataPoint> lesserSubset, higherSubset;
+      foreach(v, arr)
+      {
+        if((*v).compare(root->median, curDim) <= 0)
+          lesserSubset.push_back(*v); 
+        else
+          higherSubset.push_back(*v);
+      }
+      
+      curDim = curDim + 1;
+      if(curDim > dimLim)
+      {
+        curDim = 1;
+      }
+      if(lesserSubset.size() > 0)
+			  root->less = buildTree(lesserSubset, curDim);
+      if(higherSubset.size() > 0)
+			  root->more = buildTree(higherSubset, curDim);
 		}
 		return root;
 	}
@@ -350,13 +363,13 @@ int main()
 	}
 	
 	KDTree k(dim, arr);
-	//k.display();
 	//Existence check
-	DataPoint chk;
-  chk.dim = 2;
-  cin>>chk.x>>chk.y;
-  cout<<k.doesExists(chk);
-  cin>>chk.x>>chk.y;
-  cout<<k.doesExists(chk);
+	REP(i,3)
+  {
+    DataPoint chk;
+    cin>>chk.dim>>chk.x>>chk.y;
+    chk.show();
+    cout<<k.doesExists(chk)<<endl;
+  }
 	return 0;
 }
