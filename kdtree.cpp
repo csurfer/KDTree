@@ -51,13 +51,23 @@ public:
 			return false;
 	}
   // A function to compare two data points.
-  int compare(DataPoint d, int dim)
+  double compare(DataPoint d, int dim)
   {
     switch(dim)
     {
       case 1: return (x-d.x); break;
       case 2: return (y-d.y); break;
       default: return 0; break;
+    }
+  }
+  // A distance function
+  double l2dist(DataPoint d)
+  {
+    switch(dim)
+    {
+      case 1: return (x-d.x)*(x-d.x); break;
+      case 2: return (x-d.x)*(x-d.x)+(y-d.y)*(y-d.y); break;
+      default: cout<<"Error"; return -1; break;
     }
   }
 };
@@ -325,6 +335,41 @@ public:
      cout<<"End of Report..."<<endl<<endl;
     } 
   }
+  // Public handle to circle query.
+  void reportCircle(DataPoint d, double radius)
+  {
+    DataPoint d1,d2;
+    //Bounding Box Limits
+    d1.dim = d.dim;
+    d1.x = d.x - radius;
+    d1.y = d.y - radius;
+    d2.dim = d.dim;
+    d2.x = d.x + radius;
+    d2.y = d.y + radius;
+  
+    // Rectange query on Bounding Box
+    vector<DataPoint> res, result;
+    rectangleQ(root, d1, d2, &res);
+  
+    // Filtering the points within bounding box but not in circle.
+    foreach(v, res)
+    {
+      if((*v).l2dist(d) <= radius*radius)
+        result.push_back(*v);      
+    }
+
+    if(result.size() == 0)
+      cout<<"No such points exist."<<endl;
+    else
+    {
+      cout<<"Reported points are : "<<endl;
+      foreach(v, result)
+      {
+        (*v).show();
+      }
+     cout<<"End of Report..."<<endl<<endl;
+    } 
+  }
 };
 
 int main()
@@ -359,13 +404,22 @@ int main()
     cout<<k.doesExists(chk)<<endl;
   }*/
   //Rectangele Q
-  REP(i,3)
+  /*REP(i,3)
   {
     DataPoint d1, d2;
     cin>>d1.dim>>d1.x>>d1.y>>d2.dim>>d2.x>>d2.y;
     d1.show();
     d2.show();
     k.reportRectangle(d1,d2);
+  }*/
+  //Circle Q
+  REP(i,3)
+  {
+    DataPoint chk;
+    double radius;
+    cin>>chk.dim>>chk.x>>chk.y>>radius;
+    chk.show();
+    k.reportCircle(chk, radius);
   }
 	return 0;
 }
