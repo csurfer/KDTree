@@ -318,6 +318,13 @@ public:
 	{
 		return exists(root, d);
 	}
+  // Public handle to rectangle count.
+  void countRectangle(DataPoint d1, DataPoint d2)
+  {
+    vector<DataPoint> result;
+    rectangleQ(root, d1, d2, &result);
+    cout<<result.size()<<" points lie in this rectangle."<<endl<<endl;  
+  }
   // Public handle to rectangle query.
   void reportRectangle(DataPoint d1, DataPoint d2)
   {
@@ -334,6 +341,30 @@ public:
       }
      cout<<"End of Report..."<<endl<<endl;
     } 
+  }
+  // Public handle to circle count.
+  void countCircle(DataPoint d, double radius)
+  {
+    DataPoint d1,d2;
+    //Bounding Box Limits
+    d1.dim = d.dim;
+    d1.x = d.x - radius;
+    d1.y = d.y - radius;
+    d2.dim = d.dim;
+    d2.x = d.x + radius;
+    d2.y = d.y + radius;
+  
+    // Rectange query on Bounding Box
+    vector<DataPoint> res, result;
+    rectangleQ(root, d1, d2, &res);
+  
+    // Filtering the points within bounding box but not in circle.
+    foreach(v, res)
+    {
+      if((*v).l2dist(d) <= radius*radius)
+        result.push_back(*v);      
+    }
+    cout<<result.size()<<" points lie in this circle."<<endl<<endl;  
   }
   // Public handle to circle query.
   void reportCircle(DataPoint d, double radius)
@@ -404,22 +435,23 @@ int main()
     cout<<k.doesExists(chk)<<endl;
   }*/
   //Rectangele Q
-  /*REP(i,3)
+  REP(i,points/5)
   {
     DataPoint d1, d2;
     cin>>d1.dim>>d1.x>>d1.y>>d2.dim>>d2.x>>d2.y;
     d1.show();
     d2.show();
     k.reportRectangle(d1,d2);
-  }*/
+    //k.countRectangle(d1,d2);
+  }
   //Circle Q
-  REP(i,3)
+  /*REP(i,3)
   {
     DataPoint chk;
     double radius;
     cin>>chk.dim>>chk.x>>chk.y>>radius;
     chk.show();
     k.reportCircle(chk, radius);
-  }
+  }*/
 	return 0;
 }
