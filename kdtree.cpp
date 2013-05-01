@@ -149,7 +149,7 @@ private:
 			return false;
 	}
 
-  void split(Node *root, DataPoint d1, DataPoint d2)
+  void split(Node *root, DataPoint d1, DataPoint d2, vector<DataPoint>* result)
   {
     foreach(v, root->data)
     {
@@ -162,11 +162,11 @@ private:
           case 2:if(!((*v).compare(d1,2)>=0 && (*v).compare(d2,2)<=0)) flag = false;break;
         }
       }
-      if(flag) (*v).show();
+      if(flag) (*result).push_back(*v);
     }
   }
 
-  void rectangleQ(Node *root, DataPoint d1, DataPoint d2)
+  void rectangleQ(Node *root, DataPoint d1, DataPoint d2, vector<DataPoint>* result)
   {
     if(root == NULL)
       return;
@@ -186,7 +186,7 @@ private:
               case 2:if(!((*v).compare(d1,2)>=0 && (*v).compare(d2,2)<=0)) flag = false;break;
             }
           }
-          if(flag) (*v).show();
+          if(flag) (*result).push_back(*v);
         }
       }
       else
@@ -194,20 +194,20 @@ private:
         if(root->dimention == 1)
         {
           if(d2.compare(root->median,1)<=0)
-            rectangleQ(root->less, d1, d2);
+            rectangleQ(root->less, d1, d2, result);
           else if(d1.compare(root->median,1)>0)
-            rectangleQ(root->more, d1, d2);
+            rectangleQ(root->more, d1, d2, result);
           else
-            split(root, d1, d2);
+            split(root, d1, d2, result);
         }
         else if(root->dimention == 2)
         {
           if(d2.compare(root->median,2)<=0)
-            rectangleQ(root->less, d1, d2);
+            rectangleQ(root->less, d1, d2, result);
           else if(d1.compare(root->median,2)>0)
-            rectangleQ(root->more, d1, d2);
+            rectangleQ(root->more, d1, d2, result);
           else
-            split(root, d1, d2);
+            split(root, d1, d2, result);
         }
       }
     }
@@ -311,9 +311,19 @@ public:
   // Public handle to rectangle query.
   void reportRectangle(DataPoint d1, DataPoint d2)
   {
-    cout<<"Report : "<<endl;
-    rectangleQ(root, d1, d2);
-    cout<<"End of Report..."<<endl<<endl;
+    vector<DataPoint> result;
+    rectangleQ(root, d1, d2, &result);
+    if(result.size() == 0)
+      cout<<"No such points exist."<<endl;
+    else
+    {
+      cout<<"Reported points are : "<<endl;
+      foreach(v, result)
+      {
+        (*v).show();
+      }
+     cout<<"End of Report..."<<endl<<endl;
+    } 
   }
 };
 
