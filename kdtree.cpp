@@ -427,7 +427,7 @@ int main()
 	
 	KDTree k(dim, arr);
 	//Existence check
-	/*REP(i,3)
+	/*REP(i,points/5)
   {
     DataPoint chk;
     cin>>chk.dim>>chk.x>>chk.y;
@@ -435,7 +435,7 @@ int main()
     cout<<k.doesExists(chk)<<endl;
   }*/
   //Rectangele Q
-  REP(i,points/5)
+  /*REP(i,points/5)
   {
     DataPoint d1, d2;
     cin>>d1.dim>>d1.x>>d1.y>>d2.dim>>d2.x>>d2.y;
@@ -443,15 +443,16 @@ int main()
     d2.show();
     k.reportRectangle(d1,d2);
     //k.countRectangle(d1,d2);
-  }
+  }*/
   //Circle Q
-  /*REP(i,3)
+  REP(i,points/5)
   {
     DataPoint chk;
     double radius;
     cin>>chk.dim>>chk.x>>chk.y>>radius;
     chk.show();
-    k.reportCircle(chk, radius);
-  }*/
+    //k.reportCircle(chk, radius);
+    k.countCircle(chk, radius);
+  }
 	return 0;
 }
