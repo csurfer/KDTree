@@ -441,8 +441,8 @@ int main()
     cin>>d1.dim>>d1.x>>d1.y>>d2.dim>>d2.x>>d2.y;
     d1.show();
     d2.show();
-    k.reportRectangle(d1,d2);
-    //k.countRectangle(d1,d2);
+    //k.reportRectangle(d1,d2);
+    k.countRectangle(d1,d2);
   }*/
   //Circle Q
   REP(i,points/5)
@@ -451,8 +451,8 @@ int main()
     double radius;
     cin>>chk.dim>>chk.x>>chk.y>>radius;
     chk.show();
-    //k.reportCircle(chk, radius);
-    k.countCircle(chk, radius);
+    k.reportCircle(chk, radius);
+    //k.countCircle(chk, radius);
   }
 	return 0;
 }
