@@ -425,7 +425,7 @@ int main()
 		arr.push_back(d);
 	}
 	
-	//KDTree k(dim, arr);
+	KDTree k(dim, arr);
 	//Existence check
 	/*REP(i,points/5)
   {

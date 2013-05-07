@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+%Gummi|063|=)
+\title{\textbf{k-d Tree for points in a plane}}
+\author{Vishwas Badarinath Sharma\\
+		ID : 108692460}
+\date{}
+\begin{document}
+
+\maketitle
+
+\section{Abstract}
+
+k-d Tree or k-dimensional tree is a space partitioning data structure for
+organizing points in a k-dimensional space. This data structure is quite handy
+when it comes to queries like range searches and nearest neighbor searches. As a class project for CSE-555 I would like to implement a data structure library for k-d trees in C++ focusing on 2 dimensional k-d trees. The purpose of the project would be to come up with an implementation of k-d tree data structure in C++ and compare its speed to the speed of the queries if processed in the Brute force way.
+
+\section{Supported Features}
+
+\begin{itemize}
+  \item Data structure called DataPoint which allows upto 2-d co-ordinate storage and supports functions like equals (Equality check), compare (Compare two points) and l2distance (L2 distance between two points) queries. 
+  \item Data structure called KDTree which allows upto 2-d co-ordinate storage and supports functions like display (Display KDTree), doesExists (Check existance of the given point in space), countRectange (Count the number of points that lie in the given rectangular boundary), reportRectangle (Report all the points that lie in the given rectangualr boundary), countCircle (Report all the points that lie in the given circular query), reportCircle (Report all the points that lie in the given circular query) queries.
+  \item Implicitly supports countPoint (Count the number of points that lie on the given point), countLine(Count the number of points that lie on the given line) queries by specifying the inputs to earlier queries in a special format.
+\end{itemize}
+
+\section{Implementation Details}
+\indent KDTree is implemented as a class in C++ which can be instantiated in a simple way by the usage of its constructor which takes the kdTree dimensions and a vector of DataPoints as its parameters.\\
+\indent KDTree class uses two other classes called DataPoint (To store the data point) and Node (To store the node of the tree) internally. The current implementation follows the design model of input once and query many times i,e the input to KDTree has to be provided during the instantiation of the tree but the queries can be made any number of times.
+
+\section{Proof of Correctness}
+Proof of correctness is provided through implementation wherein it can be verified by matching the answer output by Brute Force method(bruteforce.cpp) and the KDTree method(kdtree.cpp).
+The only exception to this method of verification is report queries because in bruteforce approach the DataPoints are reported in the order of input and in the KDTree approach they are reported in the order they are found in the tree.
+
+\section{Algorithmic Analysis and Implementational Flaw}
+In the implementation of count and report Circle queries the implementation adds a factor of C to k where k are the reported DataPoints and hence the total complexity comes up to be O(log\textsuperscript{d}n + Ck).\\
+\indent This constant C is almost equal to 1 when the distribution of DataPoints is uniformly random. In a non-uniform distribution this constant can increase and lead to increased query time.
+
+\section{Time Analysis}
+Following are the details of the time it took to answer 2000 queries on 10000 data points by the brute-force and kd-tree approaches. The test input used was taken from /mediumtests folder. The timing is obtained from time command of linux shell in the following way
+\begin{center}time ./a.out\textless test\_input\_file \end{center}
+The results obtained are as follows
+\begin{center}
+    \begin{tabular}{| l | l | l |}
+    \hline
+    \textbf{Query} & \textbf{Brute Force Approach} & \textbf{KDTree Approach} \\ \hline
+    Existence & 0m0.450s & 0m0.081s \\ \hline
+    Count Rectangle & 0m0.683s & 0m0.655s \\ \hline
+    Report Rectangle & 0m6.107s & 0m5.368s \\ \hline
+    Count Circle & \textbf{0m0.812s} & 0m1.394s \\ \hline
+    Report Circle & \textbf{0m21.745s} & 0m22.744s \\
+    \hline
+    \end{tabular}
+\end{center}
+\begin{center}\textbf{Table 1}\end{center}
+We can observe that in the emphasized time value Brute Force Approach beats the KDTree approach. The thing to note is
+\begin{center}KDTree approach = Time to construct the tree + Time for querying\end{center}
+whereas in the case of BruteForce its just the query time. So how much time does it take to construct the tree in practice? Here are some values calculated exprimentally.
+\begin{center}
+    \begin{tabular}{| l | l |}
+    \hline
+    \textbf{No of data points} & \textbf{Tree build+Input read time}\\ \hline
+    1000 & 0m0.015s\\ \hline
+    10000 & 0m0.068s\\ \hline
+    100000 & 0m0.744s\\
+    \hline
+    \end{tabular}
+\end{center}
+From the above results we can clearly see that KDTree for a large number of data points can be constructed quite fast. However the time consumed to construct the tree is of significance when compared with total query time. This time should be considered as preprocessing time and hence it is clear that KDTree proves to be extremely fast when compared to the Brute Force approach and scales gracefully. 
+
+\section{Code bundle contents}
+
+\begin{itemize}
+	\item /bigtests : Test cases which have 100000 Data points and 20000 query points.
+	\item /mediumtests : Test cases which have 10000 Data points and 2000 query points.
+	\item /smalltests : Test cases which have 100 Data points and 200 query points.
+	\item /test\_gen : Test case generater files.
+	\item bruteforce.cpp : Bruteforce way to do existance check, circle count and report queries and rectangle count and report queries.
+	\item kdtree.cpp : KDTree approach to the above problem.
+\end{itemize}
+
+\section{How to run the code for checking ?}
+Comment or un-comment relevent parts of the kdtree.cpp main() function and save it. Then do
+\begin{center}g++ kdtree.cpp\\
+./a.out\textless test\_input\_file\end{center}
+
+\section{Structure of test\_inp\_file}
+Very first line contains the dimensionality of the points. Second line contains the number of data points to follow(say n). The next n lines contain a data point in that a particular dimension. This is followed by n/5 number of query points which follow the format of one of these three : 
+	\begin{itemize}
+  		\item Existence Query : (Dimentionality of point) (Co-ordinates of Point)
+  		\item Rectangle Query : (Dimentionality of point) (Co-ordinates of Point 1) (Dimentionality of point) (Co-ordinates of Point 2)
+  		\item Circle Query : (Dimentionality of point) (Co-ordinates of Point) (Value of Radius of Circle)
+  		\item Point Query can be made by making Point 1 and Point 2 in Rectangle query the same and Line Query can be made by making Point 1 and Point 2 in Rectangle query co-linear.
+	\end{itemize}
+
+\section{Improvements possible}
+	\begin{itemize}
+		\item Support for polygon queries.
+		\item Removal of the constant factor in circle queries.
+	\end{itemize}
+
+\section{References}
+	\begin{itemize}
+		\item Wikipedia article on KDTree.
+	\end{itemize}
+
+\end{document}
