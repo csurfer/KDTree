@@ -1,8 +1,9 @@
 \documentclass[11pt]{article}
 %Gummi|063|=)
 \title{\textbf{k-d Tree for points in a plane}}
-\author{Vishwas Badarinath Sharma\\
-		ID : 108692460}
+\author{Vishwas Badarinath Sharma 
+		(ID : 108692460)\\
+		bitBucket code repo : https://bitbucket.org/csurfer/kdtree}
 \date{}
 \begin{document}
 
@@ -17,7 +18,7 @@ when it comes to queries like range searches and nearest neighbor searches. As a
 \section{Supported Features}
 
 \begin{itemize}
-  \item Data structure called DataPoint which allows upto 2-d co-ordinate storage and supports functions like equals (Equality check), compare (Compare two points) and l2distance (L2 distance between two points) queries. 
+  \item Data structure called DataPoint which allows upto 2-d co-ordinate storage and supports functions like equals (Equality check), compare (Compare two points) and L2distance (L2 distance between two points) queries. 
   \item Data structure called KDTree which allows upto 2-d co-ordinate storage and supports functions like display (Display KDTree), doesExists (Check existance of the given point in space), countRectange (Count the number of points that lie in the given rectangular boundary), reportRectangle (Report all the points that lie in the given rectangualr boundary), countCircle (Report all the points that lie in the given circular query), reportCircle (Report all the points that lie in the given circular query) queries.
   \item Implicitly supports countPoint (Count the number of points that lie on the given point), countLine(Count the number of points that lie on the given line) queries by specifying the inputs to earlier queries in a special format.
 \end{itemize}
@@ -31,7 +32,7 @@ Proof of correctness is provided through implementation wherein it can be verifi
 The only exception to this method of verification is report queries because in bruteforce approach the DataPoints are reported in the order of input and in the KDTree approach they are reported in the order they are found in the tree.
 
 \section{Algorithmic Analysis and Implementational Flaw}
-In the implementation of count and report Circle queries the implementation adds a factor of C to k where k are the reported DataPoints and hence the total complexity comes up to be O(log\textsuperscript{d}n + Ck).\\
+In the implementation of count and report Circle queries the implementation adds a factor of C to k where k are the reported DataPoints and hence the total complexity comes up to be O(n\textsuperscript{1-1/d} + Ck).\\
 \indent This constant C is almost equal to 1 when the distribution of DataPoints is uniformly random. In a non-uniform distribution this constant can increase and lead to increased query time.
 
 \section{Time Analysis}
