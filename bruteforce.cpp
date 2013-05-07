@@ -204,8 +204,8 @@ int main()
     double radius;
     cin>>chk.dim>>chk.x>>chk.y>>radius;
     chk.show();
-    reportCircle(arr, chk, radius);
-    //countCircle(arr, chk, radius);
+    //reportCircle(arr, chk, radius);
+    countCircle(arr, chk, radius);
   }
 	return 0;
 }

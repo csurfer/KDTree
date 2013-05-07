@@ -319,15 +319,35 @@ public:
 		return exists(root, d);
 	}
   // Public handle to rectangle count.
-  void countRectangle(DataPoint d1, DataPoint d2)
+  void countRectangle(DataPoint a, DataPoint b)
   {
+    DataPoint d1,d2;
+    d1.dim = d2.dim = a.dim;
+    d1.x = MIN(a.x, b.x);
+    d2.x = MAX(a.x, b.x);
+    if(d1.dim == 2)
+    {
+      d1.y = MIN(a.y, b.y);
+      d2.y = MAX(a.y, b.y);
+    }
+
     vector<DataPoint> result;
     rectangleQ(root, d1, d2, &result);
     cout<<result.size()<<" points lie in this rectangle."<<endl<<endl;  
   }
   // Public handle to rectangle query.
-  void reportRectangle(DataPoint d1, DataPoint d2)
+  void reportRectangle(DataPoint a, DataPoint b)
   {
+    DataPoint d1,d2;
+    d1.dim = d2.dim = a.dim;
+    d1.x = MIN(a.x, b.x);
+    d2.x = MAX(a.x, b.x);
+    if(d1.dim == 2)
+    {
+      d1.y = MIN(a.y, b.y);
+      d2.y = MAX(a.y, b.y);
+    }
+
     vector<DataPoint> result;
     rectangleQ(root, d1, d2, &result);
     if(result.size() == 0)
@@ -434,8 +454,8 @@ int main()
     chk.show();
     cout<<k.doesExists(chk)<<endl;
   }*/
-  /*//Rectangele Q
-  REP(i,points/5)
+  //Rectangele Q
+  /*REP(i,points/5)
   {
     DataPoint d1, d2;
     cin>>d1.dim>>d1.x>>d1.y>>d2.dim>>d2.x>>d2.y;
@@ -445,14 +465,14 @@ int main()
     k.countRectangle(d1,d2);
   }*/
   //Circle Q
-  /*REP(i,points/5)
+  REP(i,points/5)
   {
     DataPoint chk;
     double radius;
     cin>>chk.dim>>chk.x>>chk.y>>radius;
     chk.show();
-    k.reportCircle(chk, radius);
-    //k.countCircle(chk, radius);
-  }*/
+    //k.reportCircle(chk, radius);
+    k.countCircle(chk, radius);
+  }
 	return 0;
 }
