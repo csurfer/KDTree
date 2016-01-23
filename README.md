@@ -3,12 +3,17 @@ This project deals with the implementation of KDTree class which provides the us
 
 # Overview
 `/bigtests` Test cases which have 100000 Data points and 20000 query points.
+
 `/mediumtests` Test cases which have 10000 Data points and 2000 query points.
+
 `/smalltests` Test cases which have 100 Data points and 200 query points.
+
 `/test_gens` Test case generater files.
+
 `/executibles` Executibles of KDTree compiled specifically for the demo. The names given are self explanatory.
 
 `bruteforce.cpp` Bruteforce way to do existance check, circle count and report queries and rectangle count and report queries.
+
 `kdtree.cpp` KDTree approach to the above problem.
 
 # How to run code ? 
